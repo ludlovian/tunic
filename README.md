@@ -27,14 +27,17 @@ including `gzip` if acceptable.
 
 ## sendEventStream (opts) => _middleware_
 
-Adds `res.sendEventStream` to send Server Sent Events.
+Adds `res.sendEventStream` to send Server Sent Events. Will send a heartbeat comment
+if idle for long enough to stop the client disconnecting.
 
 Options on the factory function are:
 
 Option | Meaning
+--- | ---
 defaultHeartbeat | The standard idle heartbeat period (default 30s)
 heartbeatName | the search param that can be used to override this (default: 'hb')
 event | What custom event name to use. Default is undefined
 
-The created `sendEventStream` function should be called with and async generator
-which should yield UTF8 text. These are then sent out to the client.
+The created `sendEventStream` function should be called with an async generator
+which should yield UTF8 text, possibly containing `\n` if multiple lines.
+These are then sent out to the client.
