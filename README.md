@@ -3,7 +3,8 @@ Between outerwear and underwear, you can find handy middle-~~wear~~ware.
 
 ## bodySnatcher ( [options] ) => _middleware_
 
-Creates a middleware that gathers the request body and places it on `req.body`. Will `JSON.parse` if the content is set to `application/json`
+Creates a middleware that gathers the request body and places it on `req.body`.
+Will `JSON.parse` if the content is set to `application/json`
 
 Options include:
 
@@ -21,4 +22,19 @@ Adds all the CORS headers
 
 ## sendJson () => _middleware_
 
-Adds `res.sendJson` which will handle sending out JSON responses, including `gzip` if acceptable.
+Adds `res.sendJson` which will handle sending out JSON responses,
+including `gzip` if acceptable.
+
+## sendEventStream (opts) => _middleware_
+
+Adds `res.sendEventStream` to send Server Sent Events.
+
+Options on the factory function are:
+
+Option | Meaning
+defaultHeartbeat | The standard idle heartbeat period (default 30s)
+heartbeatName | the search param that can be used to override this (default: 'hb')
+event | What custom event name to use. Default is undefined
+
+The created `sendEventStream` function should be called with and async generator
+which should yield UTF8 text. These are then sent out to the client.

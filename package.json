@@ -1,0 +1,20 @@
+{
+  "name": "@ludlovian/tunic",
+  "version": "0.0.0",
+  "description": "Handy middleware",
+  "license": "Unlicense",
+  "author": "",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "clean": "rm -rf coverage/ node_modules/.cache/",
+    "lint": "standard '{src,test}/**/*.js'|snazzy",
+    "format": "prettier-standard '{src,test}/**/*.js'",
+    "test": "c8 node --test"
+  },
+  "dependencies": {
+    "@ludlovian/timer": "file:../timer"
+  }
+}
