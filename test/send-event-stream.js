@@ -153,4 +153,19 @@ test('sendEventStream', t => {
     assert.equal(req.destroy.mock.calls[0].arguments[0], err)
     assert.deepEqual(await str.next(), { value: undefined, done: true })
   })
+
+  test('with abort', async t => {
+    const ware = sendEventStream()
+    await ware(req, res, next)
+    const str = generateStream(2)
+    const abort = t.mock.fn(() => str.return())
+    const pDone = res.sendEventStream(str, { abort })
+
+    await Promise.resolve().then(() => {})
+    req.onclose()
+    await pDone
+    assert.equal(res.end.mock.callCount(), 1)
+    assert.equal(abort.mock.callCount(), 1)
+    assert.deepEqual(await str.next(), { value: undefined, done: true })
+  })
 })

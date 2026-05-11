@@ -7,7 +7,7 @@ export function sendEventStream ({
   event
 } = {}) {
   return (req, res, next) => {
-    res.sendEventStream = async source => {
+    res.sendEventStream = async (source, { abort } = {}) => {
       assert(source?.[Symbol.toStringTag] === 'AsyncGenerator')
 
       res.writeHead(200, {
@@ -28,7 +28,7 @@ export function sendEventStream ({
 
       req.on('close', () => {
         tmHeartbeat.cancel()
-        source.return()
+        abort ? abort() : source.return()
         res.end()
       })
 
