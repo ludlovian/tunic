@@ -1,4 +1,4 @@
-export function bodySnatcher ({ method = 'POST' } = {}) {
+export function bodySnatcher ({ method = 'POST', json } = {}) {
   if (!Array.isArray(method)) method = [method]
   return async (req, res, next) => {
     try {
@@ -9,7 +9,7 @@ export function bodySnatcher ({ method = 'POST' } = {}) {
       for await (const chunk of req) {
         data += chunk
       }
-      if (req.headers['content-type'] === 'application/json') {
+      if (json || req.headers['content-type'] === 'application/json') {
         if (data) data = JSON.parse(data)
       }
       req.body = data
